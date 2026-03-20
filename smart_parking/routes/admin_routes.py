@@ -9,7 +9,7 @@ admin_bp = Blueprint('admin_routes', __name__, url_prefix='/admin')
 @admin_required
 def admin_dashboard():
     state = SystemState.query.first()
-    recent_logs = ParkingLog.query.order_by(ParkingLog.id.desc()).limit(10).all()
+    recent_logs = ParkingLog.query.order_by(ParkingLog.id.desc()).limit(5).all()
     return render_template('admin/dashboard.html', state=state, logs=recent_logs)
 
 @admin_bp.route('/logs')
