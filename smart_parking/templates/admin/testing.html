@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>System Testing & Simulation</h2>
+<p class="text-muted">Use this panel to simulate hardware interactions when ESP32 is not connected.</p>
+
+<div class="stats-grid">
+    <div class="card">
+        <h3>Hardware: RFID Gate Scanner</h3>
+        <p class="text-sm text-muted">A single scan acts as Entry if not parked, or Exit if currently parked.</p>
+        <div class="mt-2" style="display:flex; gap:10px;">
+            <a href="{{ url_for('simulation_routes.simulate_scan', rfid='CAR101') }}" class="btn btn-primary w-100">Scan Demo User (CAR101)</a>
+            <a href="{{ url_for('simulation_routes.simulate_scan', rfid='NEWXYZ') }}" class="btn btn-secondary w-100">Scan Random Guest (NEWXYZ)</a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3>Hardware: Discrete Slot IR Sensors</h3>
+        <p class="text-sm text-muted">Simulate physical cars occupying specific slots.</p>
+        <div class="mt-2">
+            {% for i in range(1, 5) %}
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <strong>Slot {{ i }} Sensor</strong>
+                <div>
+                    <a href="{{ url_for('simulation_routes.simulate_slot', slot_id=i, status='occupied') }}" class="btn btn-secondary" style="background-color: var(--warning-color); border:none; padding: 5px 15px;">Detect Object</a>
+                    <a href="{{ url_for('simulation_routes.simulate_slot', slot_id=i, status='free') }}" class="btn btn-secondary" style="background-color: var(--success-color); border:none; padding: 5px 15px;">Clear Object</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

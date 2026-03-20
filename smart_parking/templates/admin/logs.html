@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>All Parking Logs</h2>
+<div class="card">
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>RFID</th>
+                    <th>Entry Time</th>
+                    <th>Exit Time</th>
+                    <th>Duration (min)</th>
+                    <th>Bill (₹)</th>
+                    <th>Slot</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td><span class="badge bg-primary">{{ log.rfid }}</span></td>
+                    <td>{{ log.entry_time.strftime('%Y-%m-%d %H:%M:%S') if log.entry_time else '-' }}</td>
+                    <td>{{ log.exit_time.strftime('%Y-%m-%d %H:%M:%S') if log.exit_time else '-' }}</td>
+                    <td>{{ log.duration_minutes if log.duration_minutes is not none else '-' }}</td>
+                    <td>{{ log.bill_amount if log.bill_amount is not none else '-' }}</td>
+                    <td>{{ log.slot_id }}</td>
+                    <td>
+                        <span class="badge {% if log.status == 'active' %}bg-warning{% else %}bg-success{% endif %}">
+                            {{ log.status|title }}
+                        </span>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted">No logs found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

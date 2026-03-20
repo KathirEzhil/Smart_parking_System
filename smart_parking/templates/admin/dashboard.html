@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<div class="stats-grid">
+    <div class="card stat-card info">
+        <h3>Total System Revenue</h3>
+        <p class="stat-value text-accent">₹{{ state.total_revenue if state else 0 }}</p>
+    </div>
+    <div class="card stat-card primary">
+        <h3>System Configured Slots</h3>
+        <p class="stat-value">{{ state.total_slots if state else 4 }}</p>
+    </div>
+</div>
+
+<h3>Live Parking Layout</h3>
+<div class="card mb-1">
+    <div class="parking-lot" id="liveGrid">
+        <div style="text-align:center; width:100%; color:#64748b;">Loading Live Grid...</div>
+    </div>
+    <div class="grid-legend mt-2 flex-row" style="justify-content: center; gap: 20px;">
+        <div><span class="legend-box" style="background:var(--success-color);"></span> Available</div>
+        <div><span class="legend-box" style="background:var(--warning-color);"></span> Occupied</div>
+    </div>
+</div>
+
+<h3 class="mt-2">Recent Logs</h3>
+<div class="card">
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>RFID</th>
+                    <th>Status</th>
+                    <th>Slot</th>
+                    <th>Bill (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>#{{ log.id }}</td>
+                    <td><span class="badge bg-primary">{{ log.rfid }}</span></td>
+                    <td>
+                        <span class="badge {% if log.status == 'active' %}bg-warning{% else %}bg-success{% endif %}">
+                            {{ log.status|title }}
+                        </span>
+                    </td>
+                    <td>{{ log.slot_id }}</td>
+                    <td>{{ log.bill_amount or '-' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No recent logs</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top: 10px; text-align: center;">
+        <a href="{{ url_for('admin_routes.logs') }}" class="btn btn-secondary">View All Logs</a>
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='grid.js') }}"></script>
+{% endblock %}

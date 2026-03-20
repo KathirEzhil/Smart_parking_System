@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+    <div>
+        <h2 style="margin:0; font-size:1.3rem;">📊 System Analytics</h2>
+        <p class="text-muted text-sm" style="margin:2px 0 0 0;">Live statistics from all parking sessions</p>
+    </div>
+</div>
+
+<!-- ROW 1: KPI Cards (compact, single line) -->
+<div style="display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-bottom:12px;">
+    <div class="card" style="border-top:3px solid var(--primary-color); padding:12px; text-align:center;">
+        <p style="margin:0; font-size:0.72rem; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Total Vehicles</p>
+        <p style="margin:4px 0 0 0; font-size:1.8rem; font-weight:800; color:var(--primary-color);">{{ total_vehicles }}</p>
+        <p class="text-muted text-sm" style="margin:0;">All-time entries</p>
+    </div>
+    <div class="card" style="border-top:3px solid #4cc9f0; padding:12px; text-align:center;">
+        <p style="margin:0; font-size:0.72rem; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Currently Inside</p>
+        <p style="margin:4px 0 0 0; font-size:1.8rem; font-weight:800; color:#4cc9f0;">{{ currently_inside }}</p>
+        <p class="text-muted text-sm" style="margin:0;">Active sessions</p>
+    </div>
+    <div class="card" style="border-top:3px solid #06d6a0; padding:12px; text-align:center;">
+        <p style="margin:0; font-size:0.72rem; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Total Revenue</p>
+        <p style="margin:4px 0 0 0; font-size:1.8rem; font-weight:800; color:#06d6a0;">₹{{ total_revenue }}</p>
+        <p class="text-muted text-sm" style="margin:0;">{{ total_completed }} sessions</p>
+    </div>
+    <div class="card" style="border-top:3px solid #f72585; padding:12px; text-align:center;">
+        <p style="margin:0; font-size:0.72rem; color:#64748b; text-transform:uppercase; letter-spacing:1px;">Daily Turnover</p>
+        <p style="margin:4px 0 0 0; font-size:1.8rem; font-weight:800; color:#f72585;">{{ turnover_rate }}</p>
+        <p class="text-muted text-sm" style="margin:0;">Avg completions/day</p>
+    </div>
+</div>
+
+<!-- ROW 2: Chart (left, 60%) + Stat Cards (right, 40%) side by side -->
+<div style="display:grid; grid-template-columns: 3fr 2fr; gap:12px;">
+
+    <!-- Chart -->
+    <div class="card" style="border-top:3px solid #7209b7; padding:14px;">
+        <h3 style="margin:0 0 2px 0; font-size:0.95rem;">🕐 Demand by Hour of Day</h3>
+        <p class="text-muted text-sm" style="margin:0 0 8px 0;">Entries per hour across all sessions</p>
+        <div style="position:relative; height:185px;">
+            <canvas id="occupancyChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Right column: 3 stat cards stacked -->
+    <div style="display:flex; flex-direction:column; gap:12px;">
+
+        <!-- Peak Hour -->
+        <div class="card" style="border-top:3px solid #f72585; padding:12px; flex:1;">
+            <h3 style="margin:0 0 4px 0; font-size:0.85rem; color:#f72585;">🔥 Peak Hour</h3>
+            <p style="margin:0; font-size:1.4rem; font-weight:800;">{{ peak_hour_str }}</p>
+            <p class="text-muted text-sm" style="margin:4px 0 0 0;"><strong>{{ peak_count }}</strong> vehicles in this window</p>
+        </div>
+
+        <!-- Duration -->
+        <div class="card" style="border-top:3px solid #4cc9f0; padding:12px; flex:1;">
+            <h3 style="margin:0 0 4px 0; font-size:0.85rem; color:#4cc9f0;">⏱ Duration (min)</h3>
+            <div style="display:flex; gap:8px; margin-top:6px;">
+                <div style="flex:1; text-align:center; background:rgba(76,201,240,0.1); border-radius:6px; padding:6px;">
+                    <p class="text-sm text-muted" style="margin:0;">Min</p>
+                    <p style="font-size:1.1rem; font-weight:700; margin:2px 0;">{{ min_duration }}</p>
+                </div>
+                <div style="flex:1; text-align:center; background:rgba(76,201,240,0.15); border-radius:6px; padding:6px;">
+                    <p class="text-sm text-muted" style="margin:0;">Avg</p>
+                    <p style="font-size:1.1rem; font-weight:700; margin:2px 0;">{{ avg_duration }}</p>
+                </div>
+                <div style="flex:1; text-align:center; background:rgba(76,201,240,0.1); border-radius:6px; padding:6px;">
+                    <p class="text-sm text-muted" style="margin:0;">Max</p>
+                    <p style="font-size:1.1rem; font-weight:700; margin:2px 0;">{{ max_duration }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Busiest Day -->
+        <div class="card" style="border-top:3px solid #06d6a0; padding:12px; flex:1;">
+            <h3 style="margin:0 0 4px 0; font-size:0.85rem; color:#06d6a0;">📅 Busiest Day</h3>
+            <p style="margin:0; font-size:1.4rem; font-weight:800;">{{ busiest_day }}</p>
+            <p class="text-muted text-sm" style="margin:4px 0 0 0;"><strong>{{ busiest_day_count }}</strong> vehicles historically</p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='charts.js') }}"></script>
+{% endblock %}

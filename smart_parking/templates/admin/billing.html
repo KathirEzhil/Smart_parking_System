@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Billing & Revenue Overview</h2>
+<div class="stats-grid">
+    <div class="card stat-card success">
+        <h3>Total Revenue Generated</h3>
+        <p class="stat-value text-accent">₹{{ revenue }}</p>
+    </div>
+    <div class="card stat-card primary">
+        <h3>Completed Transactions</h3>
+        <p class="stat-value">{{ transactions }}</p>
+    </div>
+    <div class="card stat-card info">
+        <h3>Avg Parking Time</h3>
+        <p class="stat-value">{{ avg_time }} mins</p>
+    </div>
+</div>
+<div class="card mt-2">
+    <h3>Pricing Policy</h3>
+    <ul style="list-style-type: disc; padding-left: 20px; margin-top: 10px;">
+        <li>First hour (<= 60 mins): <strong>₹20</strong></li>
+        <li>Each additional hour (or fraction): <strong>+₹10</strong></li>
+    </ul>
+</div>
+{% endblock %}
