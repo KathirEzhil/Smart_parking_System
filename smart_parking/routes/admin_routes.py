@@ -1,8 +1,27 @@
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, request, flash, redirect, url_for
 from models.parking_model import ParkingLog, SystemState
 from utils.auth_decorators import admin_required
+from models import db
 
 admin_bp = Blueprint('admin_routes', __name__, url_prefix='/admin')
+
+@admin_bp.route('/api/recent_logs')
+@admin_required
+def recent_logs_api():
+    logs = ParkingLog.query.order_by(ParkingLog.id.desc()).limit(5).all()
+    state = SystemState.query.first()
+    return jsonify({
+        'revenue': state.total_revenue if state else 0,
+        'logs': [{
+            'id':        l.id,
+            'rfid':      l.rfid,
+            'status':    l.status,
+            'slot_id':   l.slot_id,
+            'bill':      l.bill_amount,
+            'entry':     l.entry_time.strftime('%H:%M:%S') if l.entry_time else '',
+            'exit':      l.exit_time.strftime('%H:%M:%S')  if l.exit_time  else ''
+        } for l in logs]
+    })
 
 @admin_bp.route('/')
 @admin_bp.route('/dashboard')

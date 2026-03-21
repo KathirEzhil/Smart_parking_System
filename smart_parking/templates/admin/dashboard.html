@@ -34,11 +34,12 @@
                     <th>ID</th>
                     <th>RFID</th>
                     <th>Status</th>
+                    <th>Entry → Exit</th>
                     <th>Slot</th>
                     <th>Bill (₹)</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="logsBody">
                 {% for log in logs %}
                 <tr>
                     <td>#{{ log.id }}</td>
@@ -59,7 +60,8 @@
             </tbody>
         </table>
     </div>
-    <div style="margin-top: 10px; text-align: center;">
+    <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+        <span id="lastUpdated" class="text-muted text-sm">Updating...</span>
         <a href="{{ url_for('admin_routes.logs') }}" class="btn btn-secondary">View All Logs</a>
     </div>
     </div>
@@ -68,4 +70,36 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='grid.js') }}"></script>
+<script>
+(function pollLogs() {
+    fetch('/admin/api/recent_logs')
+        .then(r => r.json())
+        .then(data => {
+            // update revenue
+            const revEl = document.querySelector('.stat-value.text-accent');
+            if (revEl) revEl.textContent = '₹' + data.revenue;
+
+            // rebuild table body
+            const tbody = document.getElementById('logsBody');
+            if (!tbody) return;
+            if (!data.logs.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No recent logs</td></tr>';
+            } else {
+                tbody.innerHTML = data.logs.map(l => `
+                    <tr>
+                        <td>#${l.id}</td>
+                        <td><span class="badge bg-primary">${l.rfid}</span></td>
+                        <td><span class="badge ${l.status==='active'?'bg-warning':'bg-success'}">${l.status}</span></td>
+                        <td>${l.entry} → ${l.exit || '...'}</td>
+                        <td>${l.slot_id ?? '-'}</td>
+                        <td>${l.bill ?? '-'}</td>
+                    </tr>`).join('');
+            }
+            document.getElementById('lastUpdated').textContent =
+                'Last updated: ' + new Date().toLocaleTimeString();
+        })
+        .catch(() => {})
+        .finally(() => setTimeout(pollLogs, 3000));
+})();
+</script>
 {% endblock %}
