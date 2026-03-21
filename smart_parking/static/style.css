@@ -202,22 +202,31 @@ footer {
     margin-top: 40px;
 }
 
-/* LIVE GRID SECITON */
+/* LIVE GRID SECTION */
 .parking-lot {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    padding: 20px;
-    background: #e2e8f0;
+    gap: 20px;
+    row-gap: 30px;
+    padding: 30px;
+    background: var(--card-bg);
     border-radius: 12px;
     margin-top: 10px;
     justify-items: center;
+    position: relative;
+    /* Simulate a road in the middle using a background gradient */
+    background-image: linear-gradient(to right, transparent 48%, var(--border-color) 48%, var(--border-color) 52%, transparent 52%);
+    border: 1px solid var(--border-color);
+}
+
+body.dark-theme .parking-lot {
+    background-image: linear-gradient(to right, transparent 48%, #334155 48%, #334155 52%, transparent 52%);
 }
 
 .parking-slot {
-    width: 100px;
-    height: 140px;
-    border-radius: 8px;
+    width: 110px;
+    height: 160px;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -225,33 +234,46 @@ footer {
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     position: relative;
-    border: 2px dashed rgba(0,0,0,0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+.parking-slot::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+body.dark-theme .parking-slot::before {
+    border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
 .parking-slot .slot-label {
     font-size: 1.5rem;
     font-weight: 800;
-    color: rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.95);
     z-index: 2;
 }
 
 .parking-slot .rfid-label {
     font-size: 0.75rem;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     color: white;
-    padding: 2px 6px;
+    padding: 3px 8px;
     border-radius: 4px;
     margin-top: 10px;
     z-index: 2;
 }
 
 .slot-free {
-    background: var(--success-color); /* cyan/greenish */
+    background: #10b981; /* Professional Emerald Green */
     border: 2px solid transparent;
 }
 
 .slot-occupied {
-    background: var(--warning-color); /* pink/reddish */
+    background: #64748b; /* Professional Slate Gray */
     border: 2px solid transparent;
 }
 

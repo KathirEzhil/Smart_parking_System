@@ -3,7 +3,7 @@
 {% block content %}
 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
     <div>
-        <h2 style="margin:0; font-size:1.3rem;">📊 System Analytics</h2>
+        <h2 style="margin:0; font-size:1.6rem; font-weight:700; color:var(--text-color); letter-spacing:-0.5px;">System Analytics</h2>
         <p class="text-muted text-sm" style="margin:2px 0 0 0;">Live statistics from all parking sessions</p>
     </div>
 </div>
@@ -37,7 +37,7 @@
 
     <!-- Chart -->
     <div class="card" style="border-top:3px solid #7209b7; padding:14px;">
-        <h3 style="margin:0 0 2px 0; font-size:0.95rem;">🕐 Demand by Hour of Day</h3>
+        <h3 style="margin:0 0 6px 0; font-size:1.1rem; font-weight:600; color:var(--text-color);">Demand by Hour of Day</h3>
         <p class="text-muted text-sm" style="margin:0 0 8px 0;">Entries per hour across all sessions</p>
         <div style="position:relative; height:185px;">
             <canvas id="occupancyChart"></canvas>
@@ -49,14 +49,14 @@
 
         <!-- Peak Hour -->
         <div class="card" style="border-top:3px solid #f72585; padding:12px; flex:1;">
-            <h3 style="margin:0 0 4px 0; font-size:0.85rem; color:#f72585;">🔥 Peak Hour</h3>
+            <h3 style="margin:0 0 6px 0; font-size:0.9rem; font-weight:700; color:#f72585; text-transform:uppercase; letter-spacing:0.5px;">Peak Hour</h3>
             <p style="margin:0; font-size:1.4rem; font-weight:800;">{{ peak_hour_str }}</p>
             <p class="text-muted text-sm" style="margin:4px 0 0 0;"><strong>{{ peak_count }}</strong> vehicles in this window</p>
         </div>
 
         <!-- Duration -->
         <div class="card" style="border-top:3px solid #4cc9f0; padding:12px; flex:1;">
-            <h3 style="margin:0 0 4px 0; font-size:0.85rem; color:#4cc9f0;">⏱ Duration (min)</h3>
+            <h3 style="margin:0 0 6px 0; font-size:0.9rem; font-weight:700; color:#4cc9f0; text-transform:uppercase; letter-spacing:0.5px;">Duration (min)</h3>
             <div style="display:flex; gap:8px; margin-top:6px;">
                 <div style="flex:1; text-align:center; background:rgba(76,201,240,0.1); border-radius:6px; padding:6px;">
                     <p class="text-sm text-muted" style="margin:0;">Min</p>
@@ -75,7 +75,7 @@
 
         <!-- Busiest Day -->
         <div class="card" style="border-top:3px solid #06d6a0; padding:12px; flex:1;">
-            <h3 style="margin:0 0 4px 0; font-size:0.85rem; color:#06d6a0;">📅 Busiest Day</h3>
+            <h3 style="margin:0 0 6px 0; font-size:0.9rem; font-weight:700; color:#06d6a0; text-transform:uppercase; letter-spacing:0.5px;">Busiest Day</h3>
             <p style="margin:0; font-size:1.4rem; font-weight:800;">{{ busiest_day }}</p>
             <p class="text-muted text-sm" style="margin:4px 0 0 0;"><strong>{{ busiest_day_count }}</strong> vehicles historically</p>
         </div>
